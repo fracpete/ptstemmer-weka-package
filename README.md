@@ -5,6 +5,12 @@ Weka package for the PTStemmer (https://code.google.com/p/ptstemmer/), a stemmer
 library for Portuguese.
 
 
+Releases
+--------
+
+* [1.0.0](https://github.com/fracpete/ptstemmer-weka-package/releases/download/v1.0.0/ptstemmer-1.0.0.zip)
+
+
 How to use packages
 -------------------
 
