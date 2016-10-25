@@ -26,10 +26,11 @@ import java.io.File;
 import java.util.Enumeration;
 import java.util.Vector;
 
+import ptstemmer.exceptions.PTStemmerException;
 import ptstemmer.implementations.OrengoStemmer;
 import ptstemmer.implementations.PorterStemmer;
-import ptstemmer.support.namedentities.NamedEntitiesFromFile;
-import ptstemmer.support.stopwords.StopWordsFromFile;
+import ptstemmer.implementations.SavoyStemmer;
+import ptstemmer.support.PTStemmerUtilities;
 import weka.core.Option;
 import weka.core.OptionHandler;
 import weka.core.RevisionUtils;
@@ -47,10 +48,11 @@ import weka.core.Utils;
  <!-- options-start -->
  * Valid options are: <p/>
  *
- * <pre> -S &lt;ORENGO|PORTER&gt;
+ * <pre> -S &lt;ORENGO|PORTER|SAVOY&gt;
  *  The type of stemmer algorithm to use:
  *  ORENGO = Orengo
  *  PORTER = Porter
+ *  SAVOY = Savoy
  *  (default: ORENGO)</pre>
  *
  * <pre> -N &lt;file&gt;
@@ -86,11 +88,15 @@ public class PTStemmer
 
   /** porter stemmer. */
   public static final int STEMMER_PORTER = 1;
+  
+  /** savoy stemmer. */
+  public static final int STEMMER_SAVOY = 2;
 
   /** stemmers. */
   public static final Tag[] TAGS_STEMMERS = {
     new Tag(STEMMER_ORENGO, "orengo", "Orengo"),
-    new Tag(STEMMER_PORTER, "porter", "Porter")
+    new Tag(STEMMER_PORTER, "porter", "Porter"),
+    new Tag(STEMMER_SAVOY, "savoy", "Savoy")
   };
 
   /** the type of stemmer to use. */
@@ -171,10 +177,11 @@ public class PTStemmer
    <!-- options-start -->
    * Valid options are: <p/>
    *
-   * <pre> -S &lt;ORENGO|PORTER&gt;
+   * <pre> -S &lt;ORENGO|PORTER|SAVOY&gt;
    *  The type of stemmer algorithm to use:
    *  ORENGO = Orengo
    *  PORTER = Porter
+   *  SAVOY = Savoy
    *  (default: ORENGO)</pre>
    *
    * <pre> -N &lt;file&gt;
@@ -386,23 +393,25 @@ public class PTStemmer
    *
    * @return		the stemmer to use
    */
-  protected synchronized ptstemmer.Stemmer getActualStemmer() {
+  protected synchronized ptstemmer.Stemmer getActualStemmer() throws PTStemmerException {
     if (m_ActualStemmer == null) {
       // stemmer algorithm
       if (m_Stemmer == STEMMER_ORENGO)
 	m_ActualStemmer = new OrengoStemmer();
       else if (m_Stemmer == STEMMER_PORTER)
 	m_ActualStemmer = new PorterStemmer();
+      else if (m_Stemmer == STEMMER_SAVOY)
+	m_ActualStemmer = new SavoyStemmer();
       else
 	throw new IllegalStateException("Unhandled stemmer type: " + m_Stemmer);
 
       // named entities
       if (!m_NamedEntities.isDirectory())
-	m_ActualStemmer.ignoreNamedEntities(new NamedEntitiesFromFile(m_NamedEntities.getAbsolutePath()));
+	m_ActualStemmer.ignore(PTStemmerUtilities.fileToSet(m_NamedEntities.getAbsolutePath()));
 
       // stopwords
       if (!m_Stopwords.isDirectory())
-	m_ActualStemmer.ignoreStopWords(new StopWordsFromFile(m_Stopwords.getAbsolutePath()));
+	m_ActualStemmer.ignore(PTStemmerUtilities.fileToSet(m_Stopwords.getAbsolutePath()));
 
       // cache
       if (m_Cache > 0)
@@ -422,7 +431,14 @@ public class PTStemmer
    * @return 		the stemmed word
    */
   public String stem(String word) {
-    return getActualStemmer().wordStemming(word);
+	String ret = null;
+    try {
+	  ret = getActualStemmer().getWordStem(word);
+	}
+    catch (PTStemmerException e) {
+      e.printStackTrace();
+	}
+    return ret;
   }
 
   /**
