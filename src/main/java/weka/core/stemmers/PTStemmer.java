@@ -29,6 +29,7 @@ import java.util.Vector;
 import ptstemmer.exceptions.PTStemmerException;
 import ptstemmer.implementations.OrengoStemmer;
 import ptstemmer.implementations.PorterStemmer;
+import ptstemmer.implementations.SavoyStemmer;
 import ptstemmer.support.PTStemmerUtilities;
 import weka.core.Option;
 import weka.core.OptionHandler;
@@ -47,10 +48,11 @@ import weka.core.Utils;
  <!-- options-start -->
  * Valid options are: <p/>
  *
- * <pre> -S &lt;ORENGO|PORTER&gt;
+ * <pre> -S &lt;ORENGO|PORTER|SAVOY&gt;
  *  The type of stemmer algorithm to use:
  *  ORENGO = Orengo
  *  PORTER = Porter
+ *  SAVOY = Savoy
  *  (default: ORENGO)</pre>
  *
  * <pre> -N &lt;file&gt;
@@ -86,11 +88,15 @@ public class PTStemmer
 
   /** porter stemmer. */
   public static final int STEMMER_PORTER = 1;
+  
+  /** savoy stemmer. */
+  public static final int STEMMER_SAVOY = 2;
 
   /** stemmers. */
   public static final Tag[] TAGS_STEMMERS = {
     new Tag(STEMMER_ORENGO, "orengo", "Orengo"),
-    new Tag(STEMMER_PORTER, "porter", "Porter")
+    new Tag(STEMMER_PORTER, "porter", "Porter"),
+    new Tag(STEMMER_SAVOY, "savoy", "Savoy")
   };
 
   /** the type of stemmer to use. */
@@ -171,10 +177,11 @@ public class PTStemmer
    <!-- options-start -->
    * Valid options are: <p/>
    *
-   * <pre> -S &lt;ORENGO|PORTER&gt;
+   * <pre> -S &lt;ORENGO|PORTER|SAVOY&gt;
    *  The type of stemmer algorithm to use:
    *  ORENGO = Orengo
    *  PORTER = Porter
+   *  SAVOY = Savoy
    *  (default: ORENGO)</pre>
    *
    * <pre> -N &lt;file&gt;
@@ -393,6 +400,8 @@ public class PTStemmer
 	m_ActualStemmer = new OrengoStemmer();
       else if (m_Stemmer == STEMMER_PORTER)
 	m_ActualStemmer = new PorterStemmer();
+      else if (m_Stemmer == STEMMER_SAVOY)
+	m_ActualStemmer = new SavoyStemmer();
       else
 	throw new IllegalStateException("Unhandled stemmer type: " + m_Stemmer);
 
