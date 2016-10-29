@@ -5,10 +5,10 @@
 PackageName=ptstemmer
 
 # Version (required)
-Version=1.0.0
+Version=2.0.0
 
 #Date (year-month-day)
-Date=2014-05-25
+Date=2016-10-30
 
 # Title (required)
 Title=PTStemmer developed by Pedro Oliveira
@@ -26,10 +26,10 @@ Maintainer=Peter Reutemann <fracpete@waikato.ac.nz>
 License=GPL 3.0
 
 # Description (required)
-Description=Contains the PTStemmer developed by Pedro Oliveira (http://code.google.com/p/ptstemmer/).
+Description=Contains the PTStemmer v2 developed by Pedro Oliveira (http://code.google.com/p/ptstemmer/).
 
 # Package URL for obtaining the package archive (required)
-PackageURL=https://github.com/fracpete/ptstemmer-weka-package/releases/download/v1.0.0/ptstemmer-1.0.0.zip
+PackageURL=https://github.com/fracpete/ptstemmer-weka-package/releases/download/v2.0.0/ptstemmer-2.0.0.zip
 
 # URL for further information
 URL=https://github.com/fracpete/ptstemmer-weka-package
