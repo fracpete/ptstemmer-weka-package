@@ -8,6 +8,7 @@ library for Portuguese.
 Releases
 --------
 
+* [2.0.0](https://github.com/fracpete/ptstemmer-weka-package/releases/download/v2.0.0/ptstemmer-2.0.0.zip)
 * [1.0.0](https://github.com/fracpete/ptstemmer-weka-package/releases/download/v1.0.0/ptstemmer-1.0.0.zip)
 
 
@@ -28,7 +29,7 @@ Add the following dependency in your `pom.xml` to include the package:
     <dependency>
       <groupId>com.github.fracpete</groupId>
       <artifactId>ptstemmer-weka-package</artifactId>
-      <version>1.0.0</version>
+      <version>2.0.0</version>
       <exclusions>
         <exclusion>
           <groupId>nz.ac.waikato.cms.weka</groupId>
